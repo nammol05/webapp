@@ -1,1 +1,33 @@
+"use client"; // To mark the component as a client-side component
 
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+
+function Customers() {
+  const [customers, setCustomers] = useState([]);
+
+  useEffect(() => {
+    axios.get('http://localhost:3001/customer') // Backend now runs on port 3001
+      .then(res => {
+        setCustomers(res.data); // Assuming the backend sends the data correctly
+      })
+      .catch(err => {
+        console.error('Error fetching customer data:', err);
+      });
+  }, []);
+
+  return (
+    <div>
+      <h1>Customer List</h1>
+      <ul>
+        {customers.map(customer => (
+          <li key={customer.id} style={{ border: '1px solid #000', padding: '8px', margin: '4px', borderRadius: '5px' }}>
+            {customer.fullname}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default Customers;
